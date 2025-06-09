@@ -7,9 +7,8 @@ A modern web-based crypto wallet built for seamless blockchain interactions.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+bun add .
 
 bun dev
 
