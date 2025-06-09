@@ -1,8 +1,5 @@
-import Image from "next/image";
-import WalletIcon from "@/public/wallet.png";
-import { Dot, Wallet } from "lucide-react";
+import { Wallet } from "lucide-react";
 import { Button } from "../ui/button";
-import Link from "next/link";
 
 export const Navbar = () => {
     return (
