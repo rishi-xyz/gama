@@ -1,0 +1,1 @@
+export type UIstate = "initial" | "selectMnemonic" | "showWallets" | "showMnemonic";
