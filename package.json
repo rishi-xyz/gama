@@ -10,9 +10,17 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
+    "@solana/web3.js": "^1.98.2",
+    "@types/bs58": "^5.0.0",
+    "@types/tiny-secp256k1": "^2.0.1",
+    "bip32": "^5.0.0-rc.0",
+    "bip39": "^3.1.0",
+    "bs58": "^6.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "ethers": "^6.14.3",
     "framer-motion": "^12.16.0",
+    "gama": ".",
     "lucide-react": "^0.513.0",
     "mini-svg-data-uri": "^1.4.4",
     "motion": "^12.16.0",
@@ -21,7 +29,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sonner": "^2.0.5",
-    "tailwind-merge": "^3.3.0"
+    "tailwind-merge": "^3.3.0",
+    "tiny-secp256k1": "^2.2.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
