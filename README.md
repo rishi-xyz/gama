@@ -8,9 +8,13 @@ A modern web-based crypto wallet built for seamless blockchain interactions.
 ## Getting Started
 
 ```bash
+git clone https://github.com/rishi-xyz/gama.git
+
+cd gama
+
 bun add .
 
-bun dev
+bun run dev
 
 ```
 
