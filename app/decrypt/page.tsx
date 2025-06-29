@@ -9,25 +9,19 @@ import { Label } from "@/src/ui/label";
 import CryptoJS from 'crypto-js';
 import { Eye, EyeClosed, NotepadText } from "lucide-react";
 
-// Decryption function matching the encryption implementation
 const decryptData = (encryptedData: any, password: string) => {
     try {
         const { ciphertext, salt, iv, hmac } = encryptedData;
-
-        // Derive the same key using stored salt
         const key = CryptoJS.PBKDF2(password, CryptoJS.enc.Hex.parse(salt), {
             keySize: 256 / 32,
             iterations: 100000,
             hasher: CryptoJS.algo.SHA256
         });
-
         // Verify HMAC first (authenticate before decrypt)
         const computedHmac = CryptoJS.HmacSHA256(ciphertext, key);
         if (computedHmac.toString() !== hmac) {
             throw new Error('Invalid password or corrupted data');
         }
-
-        // Decrypt
         const decrypted = CryptoJS.AES.decrypt(
             { ciphertext: CryptoJS.enc.Hex.parse(ciphertext) } as any,
             key,
@@ -37,19 +31,16 @@ const decryptData = (encryptedData: any, password: string) => {
                 padding: CryptoJS.pad.NoPadding
             }
         );
-
         const decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
         if (!decryptedText) {
             throw new Error('Decryption failed - invalid password');
         }
-
         return decryptedText;
     } catch (error) {
         throw new Error(`Decryption failed: ${error}`);
     }
 };
 
-// Parse compact format (colon-separated)
 const parseCompactFormat = (compactString: string) => {
     const parts = compactString.split(':');
     if (parts.length !== 4) {
@@ -64,7 +55,6 @@ const parseCompactFormat = (compactString: string) => {
     };
 };
 
-// Validate JSON format
 const parseJSONFormat = (jsonString: string) => {
     try {
         const parsed = JSON.parse(jsonString);
@@ -72,8 +62,8 @@ const parseJSONFormat = (jsonString: string) => {
             throw new Error('Missing required fields in JSON format');
         }
         return parsed;
-    } catch (error) {
-        throw new Error('Invalid JSON format');
+    } catch (error: any) {
+        throw new Error('Invalid JSON format',error);
     }
 };
 
@@ -128,13 +118,10 @@ export default function DecryptPage() {
         setIsDecrypting(true);
 
         try {
-            // Add small delay to show loading state
             await new Promise(resolve => setTimeout(resolve, 500));
-
             const decrypted = decryptData(encryptedData, password);
             setDecryptedResult(decrypted);
             setStep("showResult");
-
             toast.success("🔓 Decryption Successful", {
                 description: "Your data has been successfully decrypted"
             });
@@ -198,8 +185,8 @@ export default function DecryptPage() {
                                 <button
                                     onClick={() => setInputType("json")}
                                     className={`p-4 rounded-2xl border-2 transition-all duration-200 cursor-pointer ${inputType === "json"
-                                            ? "border-blue-500 bg-blue-500/10"
-                                            : "border-gray-600 bg-gray-800/30 hover:border-gray-500"
+                                        ? "border-blue-500 bg-blue-500/10"
+                                        : "border-gray-600 bg-gray-800/30 hover:border-gray-500"
                                         }`}
                                 >
                                     <div className="flex flex-col items-center gap-y-2">
@@ -211,8 +198,8 @@ export default function DecryptPage() {
                                 <button
                                     onClick={() => setInputType("compact")}
                                     className={`p-4 rounded-2xl border-2 transition-all duration-200 cursor-pointer ${inputType === "compact"
-                                            ? "border-purple-500 bg-purple-500/10"
-                                            : "border-gray-600 bg-gray-800/30 hover:border-gray-500"
+                                        ? "border-purple-500 bg-purple-500/10"
+                                        : "border-gray-600 bg-gray-800/30 hover:border-gray-500"
                                         }`}
                                 >
                                     <div className="text-center">
@@ -426,7 +413,7 @@ export default function DecryptPage() {
                                         </li>
                                         <li className="flex items-start gap-2">
                                             <span className="text-amber-400 mt-1">•</span>
-                                            Ensure you're on a secure, private network
+                                            Ensure you are on a secure, private network
                                         </li>
                                     </ul>
                                     <ul className="space-y-2">

@@ -7,12 +7,10 @@ import { Button } from "@/src/ui/button";
 import { Input } from "@/src/ui/input";
 import { Label } from "@/src/ui/label";
 import CryptoJS from 'crypto-js';
-import { Key, LucideFileLock, NotebookPenIcon } from "lucide-react";
+import { Key, NotebookPenIcon } from "lucide-react";
 
-// Production-ready encryption using crypto-js
 const encryptData = (text: string, password: string) => {
     try {
-        // Generate random salt and IV
         const salt = CryptoJS.lib.WordArray.random(256 / 8);
         const iv = CryptoJS.lib.WordArray.random(128 / 8);
 
@@ -23,7 +21,7 @@ const encryptData = (text: string, password: string) => {
             hasher: CryptoJS.algo.SHA256
         });
 
-        // Encrypt using AES-GCM equivalent (AES-CTR with HMAC for authentication)
+        // (AES-CTR with HMAC for authentication)
         const encrypted = CryptoJS.AES.encrypt(text, key, {
             iv: iv,
             mode: CryptoJS.mode.CTR,
@@ -47,21 +45,15 @@ const encryptData = (text: string, password: string) => {
 const decryptData = (encryptedData: any, password: string) => {
     try {
         const { ciphertext, salt, iv, hmac } = encryptedData;
-
-        // Derive the same key using stored salt
         const key = CryptoJS.PBKDF2(password, CryptoJS.enc.Hex.parse(salt), {
             keySize: 256 / 32,
             iterations: 100000,
             hasher: CryptoJS.algo.SHA256
         });
-
-        // Verify HMAC first (authenticate before decrypt)
         const computedHmac = CryptoJS.HmacSHA256(ciphertext, key);
         if (computedHmac.toString() !== hmac) {
             throw new Error('Invalid password or corrupted data');
         }
-
-        // Decrypt
         const decrypted = CryptoJS.AES.decrypt(
             { ciphertext: CryptoJS.enc.Hex.parse(ciphertext) } as any,
             key,
@@ -129,9 +121,8 @@ export default function DashboardPage() {
         setIsEncrypting(true);
 
         try {
-            // Add small delay to show loading state
             await new Promise(resolve => setTimeout(resolve, 500));
-
+            
             const result = encryptData(privateKey, password);
 
             const encryptedData: EncryptedData = {
@@ -254,8 +245,8 @@ export default function DashboardPage() {
                         <button
                             onClick={() => setMethod("password")}
                             className={`p-6 rounded-2xl border-2 transition-all duration-200 ${method === "password"
-                                    ? "border-blue-500 bg-blue-500/10"
-                                    : "border-gray-600 bg-gray-800/30 hover:border-gray-500"
+                                ? "border-blue-500 bg-blue-500/10"
+                                : "border-gray-600 bg-gray-800/30 hover:border-gray-500"
                                 }`}
                         >
                             <div className="flex items-center space-x-4">
@@ -272,12 +263,12 @@ export default function DashboardPage() {
                         <button
                             onClick={() => setMethod("passphrase")}
                             className={`p-6 rounded-2xl border-2 transition-all duration-200 ${method === "passphrase"
-                                    ? "border-purple-500 bg-purple-500/10"
-                                    : "border-gray-600 bg-gray-800/30 hover:border-gray-500"
+                                ? "border-purple-500 bg-purple-500/10"
+                                : "border-gray-600 bg-gray-800/30 hover:border-gray-500"
                                 }`}
                         >
                             <div className="flex items-center space-x-4">
-                                    <NotebookPenIcon />
+                                <NotebookPenIcon />
                                 <div className="text-left">
                                     <h3 className="font-semibold text-lg">Custom Passphrase</h3>
                                     <p className="text-sm text-gray-400">
