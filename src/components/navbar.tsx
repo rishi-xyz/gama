@@ -1,5 +1,6 @@
 import { Wallet } from "lucide-react";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 export const Navbar = () => {
     return (
@@ -7,13 +8,22 @@ export const Navbar = () => {
             <div className="mx-auto max-w-7xl flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <Wallet />
-                    <span className="text-2xl font-semibold text-white tracking-wide">
+                    <Link href={"/"} className="text-2xl font-semibold text-white tracking-wide">
                         Gama
-                    </span>
+                    </Link>
                 </div>
-                <Button>
-                    Version 1.0
-                </Button>
+                <div className="flex items-center justify-center gap-x-3">
+                    <Link href={"/encrypt"}>
+                        <Button>
+                            Encrypt
+                        </Button>
+                    </Link>
+                    <Link href={"/decrypt"}>
+                        <Button>
+                            Decrypt
+                        </Button>
+                    </Link>
+                </div>
             </div>
         </header>
     );
